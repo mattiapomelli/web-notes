@@ -1,3 +1,26 @@
+function getNodesFromSelection() {
+  const selection = window.getSelection();
+
+  if (selection && selection.rangeCount > 0) {
+    const range = selection.getRangeAt(0);
+
+    let node = range.startContainer;
+    const endNode = range.endContainer;
+  
+    // Special case for a range that is contained within a single node
+    if (node == endNode) {
+      return [node];
+    }
+
+    const clonedSelection = range.cloneContents();
+    // const selectedNodes = Array.from(clonedSelection.childNodes)
+    // return selectedNodes
+    return clonedSelection.childNodes
+  } 
+
+  return []
+}
+
 function getHTMLOfSelection() {
   
   if (window.getSelection) {
@@ -5,9 +28,22 @@ function getHTMLOfSelection() {
 
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
+
+      let node = range.startContainer;
+      const endNode = range.endContainer;
+    
+      // Special case for a range that is contained within a single node
+      if (node == endNode) {
+        const tag = node.parentElement?.localName
+        return `<${tag}>${node.nodeValue}</${tag}>`
+      }
+
       const clonedSelection = range.cloneContents();
       const div = document.createElement('div');
       div.appendChild(clonedSelection);
+
+      // const selectedNodes = Array.from(clonedSelection.childNodes)
+
       return div.innerHTML;
     }
     else {
@@ -68,5 +104,6 @@ function getSelectedNodes() {
 
 export {
   getHTMLOfSelection,
-  getSelectedNodes
+  getSelectedNodes,
+  getNodesFromSelection
 }
