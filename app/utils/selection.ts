@@ -53,10 +53,8 @@ function getHTMLOfSelection() {
       // }
       
       div.appendChild(clonedSelection);
-      // const selectedNodes = Array.from(clonedSelection.childNodes)
-      // const clean = sanitizeHtml(div.innerHTML);
 
-      return div.innerHTML + "/n";
+      return div.innerHTML
     }
     else {
       return '';

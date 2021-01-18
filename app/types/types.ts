@@ -1,8 +1,10 @@
+type FormatType = "md" | "html" | "txt"
+
 interface MessageType {
   type: "download" | "notes" | "new-session",
-  format?: "md" | "html" | "txt",
+  format?: FormatType,
   text?: string,
   html?: string
 }
 
-export { MessageType }
+export { MessageType, FormatType }

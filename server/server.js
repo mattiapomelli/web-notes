@@ -9,12 +9,12 @@ const turndownService = new TurndownService({ headingStyle: 'atx' })
 app.use(express.json())
 
 app.post("/", (req, res) => {
-  const { data } = req.body
-  const clean = sanitizeHtml(data);
-  const markdown = turndownService.turndown(clean)
-  console.log(markdown)
+  const { data, format } = req.body
+  const cleanHTML = sanitizeHtml(data);
 
-  res.json(markdown)
+  const result = format === 'md' ? turndownService.turndown(cleanHTML) : cleanHTML
+
+  res.json(result)
 })
 
 const port = process.env.PORT || 5000

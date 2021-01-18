@@ -2,7 +2,7 @@
 import 'chromereload/devonly'
 
 import { downloadFile } from '../utils/downloadfile'
-import { MessageType } from '../types/types'
+import { MessageType, FormatType } from '../types/types'
 
 let notes = ''
 let notesHTML = ''
@@ -17,24 +17,7 @@ chrome.runtime.onMessage.addListener((message: MessageType) => {
       break
 
     case "download":
-      fetch("http://localhost:5000", {
-        method: "POST",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({data: notesHTML})
-      })
-      .then(res => res.json())
-      .then(data => {
-        downloadFile(data, "try.txt", "text/html")
-        notes = ''
-        notesHTML = ''  
-      })
-      .catch(err => {
-        console.log(err);
-      })
-
+      handleDownload(message.format)
       break
     
     case "new-session":
@@ -49,3 +32,30 @@ chrome.runtime.onMessage.addListener((message: MessageType) => {
   }
 })
 
+function handleDownload(format: FormatType = "txt") {
+
+  if(format === "txt") {
+    downloadFile(notes, `try.${format}`, "text/plain")
+  } else {
+    fetch("http://localhost:5000", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: notesHTML,
+        format
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      downloadFile(data, `try.${format}`, "text/html")
+      notes = ''
+      notesHTML = ''  
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+}
