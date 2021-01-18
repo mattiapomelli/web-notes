@@ -1,6 +1,7 @@
 // Enable chromereload by uncommenting this line:
 import 'chromereload/devonly'
 
+import { MessageType } from '../types/types'
 
 const notesScreen = document.getElementById("notes-container")
 const downloadScreen = document.getElementById("download-container")
@@ -18,13 +19,15 @@ if(window.localStorage.getItem('status') == 'active') {
 
 
 function startDownloaad() {
-  chrome.runtime.sendMessage({ type: "download"});
+  const message: MessageType = { type: "download" }
+  chrome.runtime.sendMessage(message);
 }
 
 function startNotesSession() {
   showScreen("download")
   window.localStorage.setItem("status", "active");
-  chrome.runtime.sendMessage({ type: "new-notes" });
+  const message: MessageType = { type: "new-session" }
+  chrome.runtime.sendMessage(message);
 }
 
 function showScreen(screen: "notes" | "download") {

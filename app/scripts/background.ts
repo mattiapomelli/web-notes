@@ -1,25 +1,19 @@
 // Enable chromereload by uncommenting this line:
 import 'chromereload/devonly'
+
 import { downloadFile } from '../utils/downloadfile'
+import { MessageType } from '../types/types'
 
 let notes = ''
 let notesHTML = ''
 
-chrome.runtime.onMessage.addListener(receivedMessage)
-
-type Message = {
-  type: string,
-  text?: string,
-  html?: string
-}
- 
-function receivedMessage(message: Message) {
-  const { text, type, html = "" } = message
+chrome.runtime.onMessage.addListener((message: MessageType) => {
+  const { type } = message
 
   switch(type) {
     case "notes":
-      notes += text + "\n\n"
-      notesHTML = notesHTML.concat(html)
+      notes += message.text + "\n\n"
+      notesHTML += message.html
       break
 
     case "download":
@@ -43,15 +37,15 @@ function receivedMessage(message: Message) {
 
       break
     
-    case "new-notes":
+    case "new-session":
       chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
         const activeTab = tabs[0]
         if(activeTab.id) {
-          chrome.tabs.sendMessage(activeTab.id, { type: 'new-notes'})
+          const message: MessageType = {type: "new-session"}
+          chrome.tabs.sendMessage(activeTab.id, message)
         }
       })
       break
   }
-}
-
+})
 

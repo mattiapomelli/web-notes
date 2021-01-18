@@ -1,13 +1,15 @@
 // Enable chromereload by uncommenting this line:
 import 'chromereload/devonly'
-import { getHTMLOfSelection, getSelectedNodes, getNodesFromSelection } from '../utils/selection'
 
-chrome.runtime.onMessage.addListener((message) => {
+import { getHTMLOfSelection } from '../utils/selection'
+import { MessageType } from '../types/types'
+
+chrome.runtime.onMessage.addListener((message: MessageType) => {
   console.log(message)
   const { type } = message
 
   switch (type) {
-    case 'new-notes':
+    case 'new-session':
       window.addEventListener("mouseup",  mouseUpHandler, false);
       break
   }
