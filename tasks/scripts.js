@@ -44,7 +44,8 @@ gulp.task('scripts', (cb) => {
           'node_modules/',
           'app/scripts/'
         ]
-      }
+      },
+      mode: ENV
     },
     webpack,
     (err, stats) => {
