@@ -1,3 +1,4 @@
+
 function getNodesFromSelection() {
   const selection = window.getSelection();
 
@@ -40,11 +41,22 @@ function getHTMLOfSelection() {
 
       const clonedSelection = range.cloneContents();
       const div = document.createElement('div');
+      
+      // for(let i = 0; i < clonedSelection.childNodes.length; i++) {
+      //   let child = <Element>clonedSelection.childNodes[i];       
+      //   if(!(child.nodeName === "#text")) {
+      //     for(let j = 0; j < child.attributes.length; j++) {
+      //       let attr = child.attributes[j].name
+      //       child.removeAttribute(attr);
+      //     }
+      //   }
+      // }
+      
       div.appendChild(clonedSelection);
-
       // const selectedNodes = Array.from(clonedSelection.childNodes)
+      // const clean = sanitizeHtml(div.innerHTML);
 
-      return div.innerHTML;
+      return div.innerHTML + "/n";
     }
     else {
       return '';
