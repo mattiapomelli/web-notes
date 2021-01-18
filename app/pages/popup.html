@@ -8,8 +8,22 @@
 <body>
 
   <div class="popup">
-    <h1>Web notes</h1>
-    <button id="download-button">Download notes</button>
+
+    <div id="notes-container">
+      <h1>Web notes</h1>
+      <input type="text" placeholder="Title" id="notes-title">
+      <button id="notes-button">Take Notes</button>
+    </div>
+    <div id="download-container">
+      <h1>Download notes</h1>
+      <select>
+        <option value="txt">Plain text</option>
+        <option value="html">HTML</option>
+        <option value="md">Markdown</option>
+      </select>
+      <button id="download-button">Download</button>
+    </div>
+
   </div>
 
   <script src="../scripts/popup.js"></script>
