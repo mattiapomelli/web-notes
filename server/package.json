@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "js-beautify": "^1.13.4",
     "sanitize-html": "^2.3.0",
     "turndown": "^7.0.0"
   }
