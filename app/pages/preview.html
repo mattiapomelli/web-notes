@@ -11,7 +11,7 @@
       height: 100%;
       font-size: 1rem;
     }
-    #preview {
+    #preview:not(:empty) {
       width: 90%;
       max-width: 700px;
       margin: 0 auto;
@@ -22,8 +22,8 @@
       position: absolute;
       top: calc(50% - 1em);
       left: calc(50% - 1em);
-      width: 3em;
-      height: 3em;
+      width: 3rem;
+      height: 3rem;
       border: 0.5em solid #3a3a3f27;
       border-left: 0.5em solid #1d1d1d;
       border-radius: 50%;
