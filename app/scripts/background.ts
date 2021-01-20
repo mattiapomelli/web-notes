@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener((message: MessageType) => {
 
   switch(type) {
     case "notes":
-      updateStorageValue("notes", (prev) => {
+      updateStorageValue<NotesType>("notes", (prev) => {
         const updatedNotes = {
           plain: prev.plain + message.text + "\n\n",
           html: prev.html + message.html
@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener((message: MessageType) => {
       break
 
     case "download":
-      getStorageValue("notes", (value) => {
+      getStorageValue<NotesType>("notes", (value) => {
         handleDownload(value, message.format)
       })
       break
@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener((message: MessageType) => {
           const newMessage: MessageType = {type: "new-session"}
           chrome.tabs.sendMessage(activeTab.id, newMessage)
 
-          setStorageValue("notes", {
+          setStorageValue<NotesType>("notes", {
             plain: message.title + "\n\n",
             html: `<h1>${message.title}</h1>`
           })
