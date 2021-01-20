@@ -5,8 +5,8 @@ import { getStorageValue, setStorageValue } from '../utils/storage'
 import { MessageType, FormatType } from '../types/types'
 
 // get reference to dom elements
-const notesScreen = document.getElementById("notes-container")
-const downloadScreen = document.getElementById("download-container")
+const setupScreen = document.getElementById("setup-screen")   // screen to show while not taking notes
+const notesScreen = document.getElementById("notes-screen")       // screen to show while taking notes
 
 const notesButton = document.getElementById("notes-button")
 notesButton?.addEventListener("click", startNotesSession)
@@ -26,7 +26,7 @@ const titleInput = <HTMLInputElement> document.getElementById("notes-title-input
 
 getStorageValue("status", (status: string) => {
   if(status === "active") {
-    showScreen("download")
+    showScreen("notes")
     getStorageValue("notes-title", (title: string) => {
       if(title && notesTitle) notesTitle.innerText = title
     })
@@ -49,7 +49,7 @@ function startNotesSession() {
   setStorageValue("status", "active")
   setStorageValue("notes-title", title)
   
-  showScreen("download")
+  showScreen("notes")
   console.log(notesTitle)
   if(notesTitle) {
     notesTitle.innerText = title
@@ -58,15 +58,15 @@ function startNotesSession() {
 
 function resetNotesSession() {
   setStorageValue("status", "inactive")
-  showScreen("notes")
+  showScreen("setup")
 }
 
-function showScreen(screen: "notes" | "download") {
+function showScreen(screen: "setup" | "notes") {
+  if(setupScreen) {
+    setupScreen.style.display = screen === "setup" ? "block" : "none";
+  }
   if(notesScreen) {
     notesScreen.style.display = screen === "notes" ? "block" : "none";
-  }
-  if(downloadScreen) {
-    downloadScreen.style.display = screen === "download" ? "block" : "none";
   }
 }
 

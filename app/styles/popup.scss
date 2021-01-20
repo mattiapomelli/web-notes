@@ -3,40 +3,93 @@
 }
 
 .popup {
-  width: 200px;
+  width: 300px;
   max-width: 90%;
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-self: center;
   align-items: center;
   margin: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   button {
-    background-color: rgb(35, 179, 107);
+    background-color: rgb(180, 180, 180);;
     color: white;
-    border: 1px solid black;
+    border: none;
+    border-radius: 0.3rem;
+    outline: none;
     font-size: 1rem;
-    padding: 0.5rem;
+    padding: 0.6rem 0.3rem;
     cursor: pointer;
     width: 100%;
+    // text-transform: uppercase;
+    font-weight: 500;
 
     &:hover {
-      background-color: rgb(30, 155, 92);
+      background-color: rgb(133, 133, 133);
+    }
+    
+    &.primary {
+      background-color: rgb(48, 187, 117);
+      &:hover {
+        background-color: rgb(30, 155, 92);
+      }
     }
   }
 
   h1 {
     margin-top: 0;
   }
+}
 
-  input {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    width: 100%;
+#notes-screen {
+  display: none;
+  width: 100%;
+
+  h1 {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5rem;
+    button {
+      flex: 1;
+    }
+    > :first-child {
+      margin-right: 0.4rem;
+    }
+  }
+
+  select {
+    background-color: rgb(216, 216, 216);;
+    border: none;
+    border-radius: 0.3rem;
+    outline: none;
+    font-size: 1rem;
+    padding: 0.6rem;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  hr {
+    margin-top: 1rem;
   }
 }
 
-#download-container {
-  display: none;
+#setup-screen {
+  input {
+    margin-bottom: 1rem;
+    width: 100%;
+    background-color: rgb(231, 231, 231);;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    padding: 0.6rem;
+    font-weight: 500;
+  }
 }

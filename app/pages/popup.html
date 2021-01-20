@@ -9,24 +9,29 @@
 
   <div class="popup">
 
-    <div id="notes-container">
+    <section id="setup-screen">
       <h1>Web notes</h1>
       <input type="text" placeholder="Title" id="notes-title-input">
-      <button id="notes-button">Take Notes</button>
-    </div>
+      <button id="notes-button" class="primary">Take Notes</button>
+    </section>
 
-    <div id="download-container">
+    <section id="notes-screen">
       <h3>Current notes: </h3>
       <h1 id="notes-title"></h1>
-      <select id="format-dropdown">
-        <option value="txt">Plain text</option>
-        <option value="html">HTML</option>
-        <option value="md">Markdown</option>
-      </select>
-      <button id="download-button">Download</button>
-      <button id="preview-button">Preview</button>
-      <button id="reset-button">Reset notes</button>
-    </div>
+      <div className="download-section">
+        <button id="download-button" class="primary">Download</button>
+        <select id="format-dropdown">
+          <option value="txt">Plain text</option>
+          <option value="html">HTML</option>
+          <option value="md">Markdown</option>
+        </select>
+      </div>
+      <hr>
+      <div className="actions-container">
+        <button id="preview-button">Preview</button>
+        <button id="reset-button">Reset notes</button>
+      </div>
+    </section>
 
   </div>
 
