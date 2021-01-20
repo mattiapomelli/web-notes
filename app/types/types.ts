@@ -4,7 +4,13 @@ interface MessageType {
   type: "download" | "notes" | "new-session",
   format?: FormatType,
   text?: string,
-  html?: string
+  html?: string,
+  title?: string
 }
 
-export { MessageType, FormatType }
+type NotesType = {
+  plain: string,
+  html: string
+}
+
+export { MessageType, FormatType, NotesType }

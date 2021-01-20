@@ -10,11 +10,12 @@ const notesButton = document.getElementById("notes-button")
 notesButton?.addEventListener("click", startNotesSession)
 
 const downloadButton = document.getElementById("download-button")
-downloadButton?.addEventListener("click", startDownloaad)
+downloadButton?.addEventListener("click", startDownload)
+
+const titleInput = <HTMLInputElement> document.getElementById("notes-title")
 
 
 chrome.storage.local.get(["status"], (result) => {
-  console.log(result)
   if(result.status === "active") {
     console.log("here")
     showScreen("download")
@@ -22,7 +23,7 @@ chrome.storage.local.get(["status"], (result) => {
 })
 
 
-function startDownloaad() {
+function startDownload() {
   const dropdown = <HTMLSelectElement> document.getElementById("format-dropdown")
   const value = <FormatType> dropdown?.options[dropdown.selectedIndex].value
 
@@ -33,9 +34,10 @@ function startDownloaad() {
 }
 
 function startNotesSession() {
-  const message: MessageType = { type: "new-session" }
+  const message: MessageType = { type: "new-session", title: titleInput?.value}
   chrome.runtime.sendMessage(message);
   chrome.storage.local.set({"status": "active"})
+  // chrome.storage.local.set({"notes-title": titleInput?.value})
   showScreen("download")
 }
 
