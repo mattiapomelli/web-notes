@@ -11,11 +11,13 @@
 
     <div id="notes-container">
       <h1>Web notes</h1>
-      <input type="text" placeholder="Title" id="notes-title">
+      <input type="text" placeholder="Title" id="notes-title-input">
       <button id="notes-button">Take Notes</button>
     </div>
+
     <div id="download-container">
-      <h1>Download notes</h1>
+      <h3>Current notes: </h3>
+      <h1 id="notes-title"></h1>
       <select id="format-dropdown">
         <option value="txt">Plain text</option>
         <option value="html">HTML</option>
@@ -23,6 +25,7 @@
       </select>
       <button id="download-button">Download</button>
       <button id="preview-button">Preview</button>
+      <button id="reset-button">Reset notes</button>
     </div>
 
   </div>

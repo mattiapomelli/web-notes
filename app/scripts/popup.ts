@@ -4,6 +4,7 @@ import 'chromereload/devonly'
 import { getStorageValue, setStorageValue } from '../utils/storage'
 import { MessageType, FormatType } from '../types/types'
 
+// get reference to dom elements
 const notesScreen = document.getElementById("notes-container")
 const downloadScreen = document.getElementById("download-container")
 
@@ -16,11 +17,19 @@ downloadButton?.addEventListener("click", startDownload)
 const previewButton = document.getElementById("preview-button")
 previewButton?.addEventListener("click", openPreview)
 
-const titleInput = <HTMLInputElement> document.getElementById("notes-title")
+const resetButton = document.getElementById("reset-button")
+resetButton?.addEventListener("click", resetNotesSession)
+
+const notesTitle = document.getElementById("notes-title")
+
+const titleInput = <HTMLInputElement> document.getElementById("notes-title-input")
 
 getStorageValue("status", (status: string) => {
   if(status === "active") {
     showScreen("download")
+    getStorageValue("notes-title", (title: string) => {
+      if(title && notesTitle) notesTitle.innerText = title
+    })
   }
 })
 
@@ -30,15 +39,26 @@ function startDownload() {
 
   const message: MessageType = { type: "download", format: value}
   chrome.runtime.sendMessage(message);
-  setStorageValue("status", "inactive")
-  showScreen("notes")
 }
 
 function startNotesSession() {
-  const message: MessageType = { type: "new-session", title: titleInput?.value}
+  const title = titleInput?.value
+  const message: MessageType = { type: "new-session", title }
   chrome.runtime.sendMessage(message);
+
   setStorageValue("status", "active")
+  setStorageValue("notes-title", title)
+  
   showScreen("download")
+  console.log(notesTitle)
+  if(notesTitle) {
+    notesTitle.innerText = title
+  }
+}
+
+function resetNotesSession() {
+  setStorageValue("status", "inactive")
+  showScreen("notes")
 }
 
 function showScreen(screen: "notes" | "download") {
