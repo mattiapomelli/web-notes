@@ -2,7 +2,8 @@
 import 'chromereload/devonly'
 
 import { getStorageValue, setStorageValue } from '../utils/storage'
-import { MessageType, FormatType } from '../types/types'
+import { sendMessageToActiveTab, sendMessageToBackground } from '../utils/message'
+import { FormatType } from '../types/types'
 
 // get reference to dom elements
 const setupScreen = document.getElementById("setup-screen")   // screen to show while not taking notes
@@ -37,26 +38,25 @@ function startDownload() {
   const dropdown = <HTMLSelectElement> document.getElementById("format-dropdown")
   const value = <FormatType> dropdown?.options[dropdown.selectedIndex].value
 
-  const message: MessageType = { type: "download", format: value}
-  chrome.runtime.sendMessage(message);
+  sendMessageToBackground({ type: "download", format: value})
 }
 
 function startNotesSession() {
   const title = titleInput?.value
-  const message: MessageType = { type: "new-session", title }
-  chrome.runtime.sendMessage(message);
+  sendMessageToBackground({ type: "new-session", title })
 
   setStorageValue("status", "active")
   setStorageValue("notes-title", title)
   
   showScreen("notes")
-  console.log(notesTitle)
+
   if(notesTitle) {
     notesTitle.innerText = title
   }
 }
 
 function resetNotesSession() {
+  sendMessageToActiveTab({ type: "reset-session"})
   setStorageValue("status", "inactive")
   showScreen("setup")
 }

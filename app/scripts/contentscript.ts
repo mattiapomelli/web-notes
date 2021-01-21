@@ -3,6 +3,7 @@ import 'chromereload/devonly'
 
 import getHTMLOfSelection from '../utils/selection'
 import { getStorageValue } from '../utils/storage'
+import { sendMessageToBackground } from '../utils/message'
 import { MessageType } from '../types/types'
 
 
@@ -14,13 +15,15 @@ getStorageValue("status", (status: string) => {
 })
 
 chrome.runtime.onMessage.addListener((message: MessageType) => {
-  console.log(message)
   const { type } = message
 
   switch (type) {
     case 'new-session':
       window.addEventListener("mouseup",  mouseUpHandler, false);
       break
+    case 'reset-session':
+      console.log("session reset")
+      window.removeEventListener("mouseup",  mouseUpHandler, false);
   }
 
 })
@@ -31,16 +34,13 @@ function mouseUpHandler(event: MouseEvent) {
     const selectedText = selection.toString()
   
     if(selectedText.length > 0) {
-      // console.log(`%c Text selected: ${selectedText}`, "color: blue")
-      // console.log(getHTMLOfSelection())
   
-      const message = {
+      sendMessageToBackground({
         type: "notes",
         text: selectedText,
         html: getHTMLOfSelection()
-      }
-  
-      chrome.runtime.sendMessage(message)
+      })
+
       createNotification(event.clientX, event.pageY - 30)
     }
   }
