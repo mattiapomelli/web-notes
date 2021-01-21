@@ -2,9 +2,8 @@
 import 'chromereload/devonly'
 
 import getHTMLOfSelection from '../utils/selection'
-import { getStorageValue } from '../utils/storage'
-import { sendMessageToBackground } from '../utils/message'
-import { MessageType } from '../types/types'
+import { getStorageValue, updateStorageValue } from '../utils/storage'
+import { MessageType, NotesType } from '../types/types'
 
 
 // if notes session is active initialize event listener on load
@@ -22,8 +21,8 @@ chrome.runtime.onMessage.addListener((message: MessageType) => {
       window.addEventListener("mouseup",  mouseUpHandler, false);
       break
     case 'reset-session':
-      console.log("session reset")
       window.removeEventListener("mouseup",  mouseUpHandler, false);
+      break
   }
 
 })
@@ -34,14 +33,16 @@ function mouseUpHandler(event: MouseEvent) {
     const selectedText = selection.toString()
   
     if(selectedText.length > 0) {
-  
-      sendMessageToBackground({
-        type: "notes",
-        text: selectedText,
-        html: getHTMLOfSelection()
+
+      updateStorageValue<NotesType>("notes", (prev) => {
+        const updatedNotes = {
+          plain: prev.plain + selectedText + "\n\n",
+          html: prev.html + getHTMLOfSelection()
+        }
+        return updatedNotes
       })
 
-      createNotification(event.clientX, event.pageY - 30)
+      createNotification(event.clientX + 30, event.pageY - 30)
     }
   }
 }
