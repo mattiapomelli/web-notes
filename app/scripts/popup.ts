@@ -2,8 +2,9 @@
 import 'chromereload/devonly'
 
 import { getStorageValue, setStorageValue } from '../utils/storage'
-import { sendMessageToActiveTab, sendMessageToBackground } from '../utils/message'
-import { FormatType } from '../types/types'
+import { sendMessageToActiveTab } from '../utils/message'
+import { downloadFile } from '../utils/downloadfile'
+import { FormatType, NotesType } from '../types/types'
 
 // get reference to dom elements
 const setupScreen = document.getElementById("setup-screen")   // screen to show while not taking notes
@@ -36,17 +37,27 @@ getStorageValue("status", (status: string) => {
 
 function startDownload() {
   const dropdown = <HTMLSelectElement> document.getElementById("format-dropdown")
-  const value = <FormatType> dropdown?.options[dropdown.selectedIndex].value
+  const format = <FormatType> dropdown?.options[dropdown.selectedIndex].value
 
-  sendMessageToBackground({ type: "download", format: value})
+  getStorageValue<NotesType>("notes", (value) => {
+    handleDownload(value, format)
+  })
+
+  // sendMessageToBackground({ type: "download", format: value})
 }
 
 function startNotesSession() {
   const title = titleInput?.value
-  sendMessageToBackground({ type: "new-session", title })
+  // sendMessageToBackground({ type: "new-session", title })
+  sendMessageToActiveTab({ type: "new-session"})
+
 
   setStorageValue("status", "active")
   setStorageValue("notes-title", title)
+  setStorageValue<NotesType>("notes", {
+    plain: title + "\n\n",
+    html: `<h1>${title}</h1>`
+  })
   
   showScreen("notes")
 
@@ -72,4 +83,30 @@ function showScreen(screen: "setup" | "notes") {
 
 function openPreview() {
   chrome.tabs.create({ url: chrome.runtime.getURL("pages/preview.html") });
+}
+
+function handleDownload(notes: NotesType, format: FormatType = "txt") {
+
+  if(format === "txt") {
+    downloadFile(notes.plain, `try.${format}`, "text/plain")
+  } else {
+    fetch("http://localhost:5000", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: notes.html,
+        format
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      downloadFile(data, `try.${format}`, "text/html")
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
 }
