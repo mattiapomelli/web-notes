@@ -3,19 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "scripts": {
-    "start": "netlify-lambda serve functions",
-    "build": "netlify-lambda build functions"
-  },
   "dependencies": {
-    "netlify-lambda": "^2.0.3"
-  },
-  "proxy": {
-    "/.netlify/functions": {
-      "target": "http://localhost:9000",
-      "pathRewrite": {
-        "^/\\.netlify/functions": ""
-      }
-    }
+    "sanitize-html": "^2.3.0"
   }
 }
