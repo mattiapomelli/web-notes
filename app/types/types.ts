@@ -1,11 +1,7 @@
 type FormatType = "md" | "html" | "txt"
 
-interface MessageType {
-  type: "download" | "notes" | "new-session" | "reset-session",
-  format?: FormatType,
-  text?: string,
-  html?: string,
-  title?: string
+type MessageType = {
+  type: "new-session" | "reset-session",
 }
 
 type NotesType = {
