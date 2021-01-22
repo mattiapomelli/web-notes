@@ -1,5 +1,5 @@
 // Enable chromereload by uncommenting this line:
-import 'chromereload/devonly'
+// import 'chromereload/devonly'
 
 import getHTMLOfSelection from '../utils/selection'
 import { getStorageValue, updateStorageValue } from '../utils/storage'

@@ -1,5 +1,5 @@
 // Enable chromereload by uncommenting this line:
-import 'chromereload/devonly'
+// import 'chromereload/devonly'
 
 import { getStorageValue, setStorageValue } from '../utils/storage'
 import { sendMessageToActiveTab } from '../utils/message'
@@ -26,6 +26,8 @@ const notesTitle = document.getElementById("notes-title")
 
 const titleInput = <HTMLInputElement> document.getElementById("notes-title-input")
 
+
+// show notes screen if a notes session is active
 getStorageValue("status", (status: string) => {
   if(status === "active") {
     showScreen("notes")
@@ -35,22 +37,23 @@ getStorageValue("status", (status: string) => {
   }
 })
 
+// download notes file in selected format
 function startDownload() {
   const dropdown = <HTMLSelectElement> document.getElementById("format-dropdown")
   const format = <FormatType> dropdown?.options[dropdown.selectedIndex].value
 
+  
   getStorageValue<NotesType>("notes", (value) => {
-    handleDownload(value, format)
+    getStorageValue("notes-title", (title: string) => {
+      handleDownload(value, format, title)
+    })
   })
-
-  // sendMessageToBackground({ type: "download", format: value})
 }
 
+// start new notes session and initialize it in storage
 function startNotesSession() {
   const title = titleInput?.value
-  // sendMessageToBackground({ type: "new-session", title })
   sendMessageToActiveTab({ type: "new-session"})
-
 
   setStorageValue("status", "active")
   setStorageValue("notes-title", title)
@@ -73,6 +76,7 @@ function resetNotesSession() {
 }
 
 function showScreen(screen: "setup" | "notes") {
+  console.log("screen")
   if(setupScreen) {
     setupScreen.style.display = screen === "setup" ? "block" : "none";
   }
@@ -85,10 +89,12 @@ function openPreview() {
   chrome.tabs.create({ url: chrome.runtime.getURL("pages/preview.html") });
 }
 
-function handleDownload(notes: NotesType, format: FormatType = "txt") {
+function handleDownload(notes: NotesType, format: FormatType, title: string) {
 
+  const filename = `${title.replace(/\s+/g, "-").toLowerCase()}.${format}`
+  
   if(format === "txt") {
-    downloadFile(notes.plain, `try.${format}`, "text/plain")
+    downloadFile(notes.plain, filename, "text/plain")
   } else {
     fetch("http://localhost:5000", {
       method: "POST",
@@ -103,7 +109,7 @@ function handleDownload(notes: NotesType, format: FormatType = "txt") {
     })
     .then(res => res.json())
     .then(data => {
-      downloadFile(data, `try.${format}`, "text/html")
+      downloadFile(data, filename, "text/html")
     })
     .catch(err => {
       console.log(err);

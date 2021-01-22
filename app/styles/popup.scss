@@ -63,7 +63,7 @@
   }
 
   select {
-    background-color: rgb(216, 216, 216);;
+    background-color: rgb(226, 226, 226);
     border: none;
     border-radius: 0.3rem;
     outline: none;
@@ -71,6 +71,10 @@
     padding: 0.6rem;
     cursor: pointer;
     font-weight: 500;
+
+    &:hover {
+      background-color: rgb(211, 211, 211);
+    }
   }
 
   hr {
