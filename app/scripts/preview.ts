@@ -4,7 +4,7 @@ import { NotesType } from '../types/types'
 const preview = document.getElementById("preview");
 
 getStorageValue<NotesType>("notes", (value) => {
-    fetch("http://localhost:5000", {
+    fetch(`${process.env.API_URL}/.netlify/functions/notes`, {
       method: "POST",
       headers: {
         'Accept': 'application/json',

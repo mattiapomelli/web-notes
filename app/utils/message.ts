@@ -9,11 +9,22 @@ function sendMessageToActiveTab(message: MessageType) {
   })
 }
 
+function sendMessageToAllTabs(message: MessageType) {
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach(tab => {
+      if(tab.id) {
+        chrome.tabs.sendMessage(tab.id, message)
+      }
+    })
+  });
+}
+
 function sendMessageToBackground(message: MessageType) {
   chrome.runtime.sendMessage(message);
 }
 
 export {
   sendMessageToActiveTab,
-  sendMessageToBackground
+  sendMessageToBackground,
+  sendMessageToAllTabs
 }

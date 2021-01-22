@@ -1,8 +1,8 @@
 // Enable chromereload by uncommenting this line:
-// import 'chromereload/devonly'
+import 'chromereload/devonly'
 
 import { getStorageValue, setStorageValue } from '../utils/storage'
-import { sendMessageToActiveTab } from '../utils/message'
+import { sendMessageToAllTabs } from '../utils/message'
 import { downloadFile } from '../utils/downloadfile'
 import { FormatType, NotesType } from '../types/types'
 
@@ -53,7 +53,7 @@ function startDownload() {
 // start new notes session and initialize it in storage
 function startNotesSession() {
   const title = titleInput?.value
-  sendMessageToActiveTab({ type: "new-session"})
+  sendMessageToAllTabs({ type: "new-session"})
 
   setStorageValue("status", "active")
   setStorageValue("notes-title", title)
@@ -70,7 +70,7 @@ function startNotesSession() {
 }
 
 function resetNotesSession() {
-  sendMessageToActiveTab({ type: "reset-session"})
+  sendMessageToAllTabs({ type: "reset-session"})
   setStorageValue("status", "inactive")
   showScreen("setup")
 }
