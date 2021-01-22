@@ -8,8 +8,10 @@ import BabiliPlugin from 'babili-webpack-plugin'
 import plumber from 'gulp-plumber'
 import livereload from 'gulp-livereload'
 import args from './lib/args'
+require('dotenv').config()
 
 const ENV = args.production ? 'production' : 'development'
+const API_URL = args.production ? process.env.API_URL : "http://localhost:8888"
 
 gulp.task('scripts', (cb) => {
   return gulp.src(['app/scripts/*.js', 'app/scripts/*.ts'])
@@ -24,7 +26,8 @@ gulp.task('scripts', (cb) => {
       plugins: [
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(ENV),
-          'process.env.VENDOR': JSON.stringify(args.vendor)
+          'process.env.VENDOR': JSON.stringify(args.vendor),
+          'process.env.API_URL': JSON.stringify(API_URL)
         })
       ].concat(args.production ? [
         new BabiliPlugin()

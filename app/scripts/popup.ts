@@ -96,7 +96,8 @@ function handleDownload(notes: NotesType, format: FormatType, title: string) {
   if(format === "txt") {
     downloadFile(notes.plain, filename, "text/plain")
   } else {
-    fetch("http://localhost:5000", {
+    console.log(process.env.API_URL)
+    fetch(`${process.env.API_URL}/.netlify/functions/notes`, {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -107,8 +108,12 @@ function handleDownload(notes: NotesType, format: FormatType, title: string) {
         format
       })
     })
-    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      return res.json()
+    })
     .then(data => {
+      console.log(data)
       downloadFile(data, filename, "text/html")
     })
     .catch(err => {
