@@ -1,9 +1,10 @@
 {
-  "name": "api",
+  "name": "web-notes-api",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "sanitize-html": "^2.3.0"
+    "js-beautify": "^1.13.4",
+    "sanitize-html": "^2.3.0",
+    "turndown": "^7.0.0"
   }
 }
